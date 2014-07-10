@@ -1,0 +1,14 @@
+[Unit]
+Description=Enable WOL on %I
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/ethtool -s %I wol g
+ExecStart=/bin/bash -c 'echo enabled > /sys/class/net/%I/device/power/wakeup'
+ExecStop=/usr/sbin/ethtool -s %I wol g
+ExecStop=/bin/bash -c 'echo enabled > /sys/class/net/%I/device/power/wakeup'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
